@@ -1,104 +1,37 @@
 <template>
-  <a-layout id="components-layout-demo-responsive">
-    <a-layout-sider
-      v-model="sidebar_inactive"     
-      collapsedWidth=0
-      :style="{height: '100vh'}"
-      :width="250"
-      :collapsible="true"
-      @collapse="on_sidebar_collapse"
-    >
-    <div :style="{overflow: 'auto',height: '100%'}">
-      <div class="logo" />
-      <a-menu theme="dark" mode="inline">
-        <a-menu-item>          
-          <span class="nav-text">nav 1</span>
-        </a-menu-item>
-        <a-sub-menu>
-          <span slot="title"><a-icon type="user" />nav 2</span>
-          <a-menu-item>
-                option1
-              </a-menu-item>
-              <a-menu-item>
-                option2
-              </a-menu-item>
-              <a-sub-menu>
-                <span slot="title"><a-icon type="user" />Option3</span>
-                <a-menu-item>
-                      option31
-                    </a-menu-item>
-                    <a-menu-item>
-                      option32
-                    </a-menu-item>
-                    <a-menu-item>
-                      option33
-                    </a-menu-item>
-              </a-sub-menu>
-              <a-menu-item>
-                option4
-              </a-menu-item>
-
-        </a-sub-menu>
-        <a-menu-item>          
-          <span class="nav-text">nav 3</span>
-        </a-menu-item>
-        <a-menu-item>          
-          <span class="nav-text">nav 4</span>
-        </a-menu-item>
-        <a-sub-menu>
-          <span slot="title"><a-icon type="user" />nav 5</span>
-          <a-menu-item>
-                option1
-              </a-menu-item>
-              <a-menu-item>
-                option2
-              </a-menu-item>
-              <a-menu-item>
-                option3
-              </a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu>
-          <span slot="title"><a-icon type="user" />nav 5</span>
-          <a-menu-item>
-                option1
-              </a-menu-item>
-              <a-menu-item>
-                option2
-              </a-menu-item>
-              <a-menu-item>
-                option3
-              </a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu>
-          <span slot="title"><a-icon type="user" />last</span>
-          <a-menu-item>
-                option1
-              </a-menu-item>
-              <a-menu-item>
-                option2
-              </a-menu-item>
-              <a-menu-item>
-                option last
-              </a-menu-item>
-        </a-sub-menu>
-      </a-menu>
-    </div>
-    </a-layout-sider>
+  <a-layout>
+    <Loading v-show="$system_variables.status_data_loaded == 0"/>    
+    <Sidebar />
     <a-layout :id="'container_content'">
-      <a-layout-header :style="{ background: '#fff', padding: 0 }" />
-      <a-layout-content :style="{ margin: '24px 16px 0' }">
-        <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-          content 1content 2content 3content 4content 5content 6
-        </div>
+      <Header/>
+      <a-layout-content :style="{ margin: '24px 16px 0',padding: '24px',background: '#fff', overflow: 'auto', height: 'calc(100vh - 88px)' }">
+         ...
+          <br />
+          Really
+          <br />...<br />...<br />...<br />
+          long
+          <br />...<br />...<br />...<br />...<br />...<br />...
+          <br />...<br />...<br />...<br />...<br />...<br />...
+          <br />...<br />...<br />...<br />...<br />...<br />...
+          <br />...<br />...<br />...<br />...<br />...<br />...
+          <br />...<br />...<br />...<br />...<br />...<br />...
+          <br />...<br />...<br />...<br />...<br />...<br />...
+          <br />...<br />...<br />...<br />...<br />...<br />
+          content
       </a-layout-content>
-      <a-layout-footer style="textAlign: center">
-        Ant Design ©2018 Created by Ant UED
-      </a-layout-footer>
+      
     </a-layout>
   </a-layout>
 </template>
 <script>
+import Loading from '@/views/busy_states/Loading.vue'
+import Sidebar from '@/views/template/Sidebar.vue'
+import Header from '@/views/template/Header.vue'
 export default {
+  name: 'App',
+  components: {
+    Loading,Sidebar,Header
+  },
   data() {
     return {
       sidebar_inactive:false
@@ -112,6 +45,8 @@ export default {
     {
       this.sidebar_inactive=true
     }
+    this.$system_functions.load_languages();
+    this.$system_functions.set_page_title(this.$system_functions.get_label('label_site_title'));
   },
   methods: {
     on_sidebar_collapse(collapsed, type) {
@@ -130,7 +65,7 @@ export default {
 </script>
 
 <style>
-#components-layout-demo-responsive .logo {
+.logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;

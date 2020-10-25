@@ -4,6 +4,10 @@ import App from './App.vue'
 import 'ant-design-vue/dist/antd.css';
 import router from './router'
 
+//import  '@/assets/system_variables.js' loaded in system functions
+import  '@/assets/system_functions.js'
+import  '@/assets/system_htm_elements_action.js'
+
 Vue.use(Antd);
 
 Vue.config.productionTip = false
