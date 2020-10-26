@@ -41,7 +41,21 @@ var system_functions= new Vue(
         set_page_title(title)
         {
             document.title=title;
-        }
+        },
+        get_form_data_with_auth(form_data)
+        {
+            form_data.append ('language', this.$system_variables.language);
+            form_data.append ('token_auth', this.$system_variables.user.token_auth);
+            form_data.append ('token_csrf', this.$system_variables.user.token_csrf);
+            return form_data;
+        },
+        set_user: function(data)
+        {
+            // data == object {token_auth: 'value'}, ...
+            for (var item in data){
+                this.$system_variables.user[item] = data[item];
+            }
+        },
         
         
         /*

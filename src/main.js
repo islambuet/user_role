@@ -10,6 +10,12 @@ import  '@/assets/system_htm_elements_action.js'
 
 Vue.use(Antd);
 
+//axios
+import axios from 'axios'
+Vue.prototype.$axios=axios
+axios.defaults.baseURL = 'http://192.168.0.2/user_role_back/';
+//axios.defaults.baseURL = 'http://103.89.24.206/user_role_back/';
+
 Vue.config.productionTip = false
 
 new Vue({

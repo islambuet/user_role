@@ -8,9 +8,10 @@
                  <a-icon type="down" />
                 </a>
                 <a-menu slot="overlay">
-                <a-menu-item ><router-link to="/change_password">{{$system_functions.get_label('label_change_password')}}</router-link></a-menu-item >
-                <a-menu-item ><router-link to="/profile_picture">{{$system_functions.get_label('label_change_profile_picture')}}</router-link></a-menu-item >
-                <a-menu-item >{{$system_functions.get_label('label_logout')}}</a-menu-item>
+                <a-menu-item >{{$system_functions.get_label('label_welcome')}} {{$system_variables.user.name}}</a-menu-item >
+                <a-menu-item v-if="$system_variables.user.id > 0"><router-link to="/change_password">{{$system_functions.get_label('label_change_password')}}</router-link></a-menu-item >
+                <a-menu-item v-if="$system_variables.user.id > 0"><router-link to="/profile_picture">{{$system_functions.get_label('label_change_profile_picture')}}</router-link></a-menu-item >
+                <a-menu-item v-if="$system_variables.user.id > 0">{{$system_functions.get_label('label_logout')}}</a-menu-item>
             </a-menu>                
             </a-dropdown>
         </div>
