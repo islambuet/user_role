@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import router from '@/router'
 
 function initial_data()
 {
@@ -30,6 +31,18 @@ var system_variables= new Vue(
       data:function(){  
         var tempdata=initial_data();                   
         return tempdata;
+      },
+      methods:{
+        logout: function(){
+          localStorage.setItem('token_auth','');
+          localStorage.setItem('token_csrf','');
+          this.user=initial_data().user;
+          if(router.path != '/login')
+          {
+            router.push("/login");
+            return;
+          }
+        }
       }
     }
   );

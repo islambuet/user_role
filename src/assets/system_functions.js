@@ -32,6 +32,26 @@ var system_functions= new Vue(
             }
           
         },
+        load_task_languages:function(language_files)        
+        {     
+            this.$system_variables.labels_task={};
+            try
+            {
+                for (var i = 0; i < language_files.length; i++) 
+                {
+                    var language=language_files[i].language;                
+                    var filedata = require(`@/${language_files[i].file}`);               
+                    for(var item in filedata.labels)
+                    {
+                        this.$system_variables.labels_task[item]=filedata.labels[item][language]?filedata.labels[item][language]:item;
+                    }
+                }          
+            }
+            catch(error){
+                console.log(error);
+            }
+          
+        },
         get_label(key){        
             return this.$system_variables.labels[key]?this.$system_variables.labels[key]:key;
         },
