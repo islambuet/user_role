@@ -21,12 +21,12 @@ export var labels={
         bn:"ছবি পরিবর্তন"
     },
     label_login:{
-        en:"login",
-        bn:"প্রবেশ করুন।"
+        en:"Login",
+        bn:"লগইন"
     },
     label_logout:{
         en:"Logout",
-        bn:"লগ আউট"
+        bn:"লগআউট"
     },
 
 
