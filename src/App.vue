@@ -5,6 +5,9 @@
     <a-layout :id="'container_content'">
       <Header/>
       <a-layout-content :style="{ margin: '24px 16px 0',padding: '24px',background: '#fff', overflow: 'auto', height: 'calc(100vh - 88px)' }" v-if="status_site_loaded == 1">
+        <LoadingFailed v-if="$system_variables.status_task_loaded == -1"/>
+        <LoadingAccessDeny v-if="$system_variables.status_task_loaded == -2"/>
+        <SiteOffLine v-if="$system_variables.status_task_loaded == -3"/>
          <router-view/>         
       </a-layout-content>
       <a-layout-content :style="{ margin: '24px 16px 0',padding: '24px',background: '#fff', overflow: 'auto', height: 'calc(100vh - 88px)' }" v-if="status_site_loaded == -1">
@@ -17,12 +20,14 @@
 <script>
 import Loading from '@/views/busy_states/Loading.vue'
 import LoadingFailed from '@/views/busy_states/LoadingFailed.vue'
+import LoadingAccessDeny from '@/views/busy_states/LoadingAccessDeny.vue'
+import SiteOffLine from '@/views/busy_states/SiteOffLine.vue'
 import Sidebar from '@/views/template/Sidebar.vue'
 import Header from '@/views/template/Header.vue'
 export default {
   name: 'App',
   components: {
-    Loading,LoadingFailed,Sidebar,Header
+    Loading,LoadingFailed,LoadingAccessDeny,SiteOffLine,Sidebar,Header
   },
   data() {
     return {

@@ -28,6 +28,10 @@ export var labels={
         en:'Refresh page',
         bn:'পেইজ রিফ্রেশ করুন'
     },
+    button_back_home_page:{
+        en:'Back Dashboard',
+        bn:'ড্যাশবোর্ড যান'
+    },
     button_column_control:{
          en:'Column Control',
          bn:'কলাম নিয়ন্ত্রণ'      

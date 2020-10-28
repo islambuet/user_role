@@ -18,7 +18,7 @@ function initial_data()
     visitors:{
       tasks:[]
     },
-    status_task_loaded:0,    //Loading=0,success=1,failed=-1,acceesdenied=-2  for all page
+    status_task_loaded:0,    //Loading=0,success=1,failed=-1,acceesdenied=-2,siteoffline=-3  for all page
     status_data_loaded:0,    //Loading=0,loaded=1
     labels:{},
     labels_task:{},
