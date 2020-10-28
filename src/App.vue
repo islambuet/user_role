@@ -104,16 +104,20 @@ export default {
     background: rgba(255, 255, 255, 0.2);
     margin: 16px;
   }
+  .mr-2{
+    margin-right: 2px;
+  }
+  .mb-2{
+    margin-bottom: 2px;;
+  }
 
-  @media (max-width:991px)
-  {
+
+  @media (max-width:991px){
     #container_content.sidebar_active{
     margin-left: -250px;
   }
-  @media print
-  {
-    .d-print-none
-    {
+  @media print{
+    .d-print-none{
       display:none!important
     }
   }
