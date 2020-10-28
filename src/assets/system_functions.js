@@ -76,6 +76,12 @@ var system_functions= new Vue(
                 this.$system_variables.user[item] = data[item];
             }
         },
+        get_msg_response_error: function()
+        {
+          return '<h4 class="alert-heading">'+this.get_label('msg_response_error_title')+'</h4>'+'<hr>'+
+                  '<p>'+this.get_label('msg_response_error_body')+'</p>'+
+                  '<p>'+this.get_label('msg_contact_with_admin')+'</p>';                    
+        },
         
         
         /*

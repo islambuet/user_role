@@ -1,15 +1,15 @@
 <template>
   <a-row >
-      <a-col :lg="{ span: 11, offset: 7 }" :sm="{ span: 13, offset: 5 }">              
-        <a-form :form="form" id="form_login" @submit.prevent="login($event)">            
-            <a-alert v-if="alert_message != ''"
-                :message="$system_functions.get_label_task('alret_login_error_title')" 
-                :type="alert_type"
-                closable
-                >
-                <p slot="description" v-html="alert_message">
-                </p>
-                </a-alert>
+      <a-col :lg="{ span: 11, offset: 7 }" :sm="{ span: 13, offset: 5 }"> 
+        <a-alert v-if="alert_message != ''"            
+            :type="alert_type"
+            closable
+            >
+            <p slot="description" v-html="alert_message">
+            </p>
+        </a-alert>             
+        <a-form :form="form" id="form_login" @submit.prevent="login($event)" v-if="!otp_required">            
+            
             <a-form-item has-feedback>
                 <a-input
                     name="username"
@@ -47,7 +47,35 @@
             </a-form-item>
                 <a-form-item>
                 <a-button type="primary" html-type="submit">
-                    Login
+                    {{this.$system_functions.get_label('button_signin')}}
+                </a-button>
+            </a-form-item>
+        </a-form>
+        <a-form :form="form" id="form_otp" @submit.prevent="login_sms($event)" v-if="otp_required">            
+            <input type="hidden" name="token_sms" :value="token_sms"/>
+            <a-form-item has-feedback>
+                <a-input
+                    name="otp"
+                    :placeholder="this.$system_functions.get_label_task('label_otp_form_placeholder_otp')"
+                    v-decorator="[
+                    'otp',
+                    {
+                        rules: [
+                        {
+                            required: true,
+                            message: 'Otp is required!',
+                        },
+                        ],
+                    },
+                    ]"
+                />
+            </a-form-item>
+            <a-form-item>
+                <a-button type="primary" html-type="submit">
+                    {{this.$system_functions.get_label('button_send')}}
+                </a-button>
+                <a-button type="primary" :style="{float:'right'}" @click="otp_required = false; alert_message = ''">
+                    {{this.$system_functions.get_label('button_cancel')}}
                 </a-button>
             </a-form-item>
         </a-form>
@@ -71,9 +99,9 @@ export default {
             form: this.$form.createForm(this, { name: 'dynamic_rule' }),
             alert_message: '',
             alert_type:'error',
+            otp_required: false,
+            token_sms: '',
 
-            // otp_required: false,
-            // token_sms: '',
             // form_title: 'Fill out the form below to login.',
             // otp_error_message: ''
         }
@@ -121,19 +149,19 @@ export default {
                             this.alert_message = this.$system_functions.get_label('USER_SUSPEND_PASSWORD_TRY_LIMIT_EXCEEDED');
                             this.alert_type = 'error';
                         }
-                        /*else if(response.data.error_type == 'OTP_VERIFICATION_REQUIRED')
+                        else if(response.data.error_type == 'OTP_VERIFICATION_REQUIRED')
                         {
                             this.token_sms = response.data.token_sms;
-                            this.alert_message = this.$system_variables.get_label('OTP_VERIFICATION_REQUIRED');
-                            this.alert_variant = 'warning';
+                            this.alert_message = this.$system_functions.get_label('OTP_VERIFICATION_REQUIRED');
+                            this.alert_type = 'success';
                             this.otp_required = true;
                         }
                         else if(response.data.error_type == 'OTP_WAIT')
                         {
-                            this.alert_message = this.$system_variables.get_label('OTP_WAIT');
-                            this.alert_variant = 'warning';
+                            this.alert_message = this.$system_functions.get_label('OTP_WAIT');
+                            this.alert_type = 'success';
                             this.otp_required = true;
-                        }*/
+                        }
                         else
                         {
                             this.alert_message = response.data.error_type;
@@ -143,8 +171,8 @@ export default {
                     })
                     .catch(error => {
                         console.log(error);
-                        //this.alert_message = this.$system_variables.get_msg_response_error();
-                        //this.alert_variant = 'danger';
+                        this.alert_message = this.$system_functions.get_msg_response_error();
+                        this.alert_type = 'error';
                         this.$system_variables.status_data_loaded = 1;
                     });
                    
@@ -155,49 +183,61 @@ export default {
         },
         login_sms: function(event)
         {
-            this.$system_variables.status_data_loaded = 0;
-            this.error_message_loading_fail = this.$system_variables.error_message_api_server;
-            
-            var device_token = ''; // Device Token Not Available while sending OTP code
+            this.form.validateFields((err, values) => 
+            {
+                if (!err) 
+                {
+                    this.alert_message = '';
+                    this.$system_variables.status_data_loaded = 0;
 
-            var formData=new FormData(document.getElementById('form_otp'));
-            formData.append ('token_device', device_token);
-            formData.append ('device[token_device]', device_token);
+                    var form_data=new FormData(document.getElementById('form_otp'));
+                    form_data.append ('token_device', this.$system_variables.user.token_device);
 
-            this.$axios.post('/login_sms',formData)
-            .then(response=>{
-                if(response.data.status_code == 110)
-                {
-                    this.error_message_loading_fail = response.data.message;
-                    this.otp_error_message = '<b style="color:#ff0000">OTP Expired or, already used!</b>';
+                    this.$axios.post('/Login/login_sms',form_data)
+                    .then(response=>{                
+                        if(response.data.error_type == '')
+                        {
+                            localStorage.setItem('token_auth', response.data.user.token_auth);
+                            localStorage.setItem('token_csrf', response.data.user.token_csrf);
+                            localStorage.setItem('token_device', response.data.user.token_device);
+                            this.$system_functions.set_user(response.data.user);
+                            this.$router.push("/");
+                        }
+                        else if(response.data.error_type == 'OTP_INCORRECT')
+                        {
+                            this.alert_message = this.$system_functions.get_label('OTP_INCORRECT');
+                            this.alert_type = 'error';
+                        }
+                        else if(response.data.error_type == 'OTP_ALREADY_USED')
+                        {
+                            this.alert_message = this.$system_functions.get_label('OTP_ALREADY_USED');
+                            this.alert_type = 'error';
+                        }
+                        else if(response.data.error_type == 'OTP_EXPIRED')
+                        {
+                            this.alert_message = this.$system_functions.get_label('OTP_EXPIRED');
+                            this.alert_type = 'error';
+                        }
+                        else if(response.data.error_type == 'OTP_NOT_LAST')
+                        {
+                            this.alert_message = this.$system_functions.get_label('OTP_NOT_LAST');
+                            this.alert_type = 'error';
+                        }
+                        else
+                        {
+                            this.alert_message = response.data.error_type;
+                            this.alert_type = 'error';
+                        }
+                        this.$system_variables.status_data_loaded = 1;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        this.alert_message = this.$system_functions.get_msg_response_error();
+                        this.alert_type = 'error';
+                        this.$system_variables.status_data_loaded = 1;
+                    });
                 }
-                else if(response.data.status_code == 300) // OTP code not Found
-                {
-                    this.error_message_loading_fail = response.data.message;
-                    this.otp_error_message = '<b style="color:#ff0000">OTP Code Not Found!</b>';
-                }
-                else if(response.data.status_code == 301)
-                {
-                    this.error_message_loading_fail = response.data.message;
-                    this.otp_error_message = '<b style="color:#ff0000">Incorrect OTP Code!</b>';
-                }
-                else if(response.data.status_code == 302)
-                {
-                    this.error_message_loading_fail = response.data.message;
-                    this.otp_error_message = '<b style="color:#ff0000">Maximum OTP Retry Exceeded!</b>';
-                }
-                else
-                {
-                    this.$parent.set_user_data(response.data.user.user);
-                    localStorage.setItem('token_device', response.data.user.device.token_device)
-                    this.$router.push({name:'Home'}).catch(()=>{}); 
-                }
-                this.$system_variables.status_data_loaded = 1;
-            })
-            .catch(error => {
-                console.log(error);
-                this.$system_variables.status_data_loaded = 1;
-            })
+            });
         },
     }
 }
