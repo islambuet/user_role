@@ -82,6 +82,31 @@ var system_functions= new Vue(
                   '<p>'+this.get_label('msg_response_error_body')+'</p>'+
                   '<p>'+this.get_label('msg_contact_with_admin')+'</p>';                    
         },
+        response_error_task: function(response)
+        {
+            if(response.data.error_type=='SITE_OFF_LINE'){
+                this.$system_variables.status_task_loaded=-3;
+            } 
+            else if(response.data.error_type=='UNAUTHORIZED'){
+                this.$system_variables.status_task_loaded=-2;
+            }            
+            else {
+                //var default_err_body='<p>'+this.get_label('msg_response_error_body')+'</p>\n\r'+'<p>'+this.get_label('msg_contact_with_admin')+'</p>'; 
+                //var default_err_body=[h('p', 'Example Text'),h('p', 'Example Text')];
+                //var err_body = (response.data.error_type==this.get_label(response.data.error_type)) ? default_err_body:response.data.error_type;                
+                this.$notification.error({
+                    message: this.get_label('msg_response_error_title'),                    
+                    duration:10,
+                    description: h => {
+                        return h(
+                          'div',             
+                          [h('p', this.get_label('msg_response_error_body')),h('p', this.get_label('msg_contact_with_admin'))]
+                        );
+                      },
+                  });
+                
+            }
+        }
         
         
         /*

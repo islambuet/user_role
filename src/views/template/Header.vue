@@ -1,5 +1,5 @@
 <template>
-    <a-layout-header :style="{ background: '#fff'}" >
+    <a-layout-header :style="{ background: '#fff'}" :class="'d-print-none'">
         <div :style="{float:'right'}">
             <img :src="$system_variables.user.info.profile_picture" v-if="$system_variables.user.info.profile_picture" alt="profileImage" class="rounded-circle" :style="{height:'32px',width:'32px'}">
             <img :src="'/images/logo.png'" v-else alt="Image" class="rounded-circle" :style="{height:'32px',width:'32px'}">

@@ -99,17 +99,23 @@ export default {
 </script>
 
 <style>
-.logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
-}
+  .logo {
+    height: 32px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 16px;
+  }
 
-@media (max-width:991px)
-{
+  @media (max-width:991px)
+  {
     #container_content.sidebar_active{
     margin-left: -250px;
   }
-
+  @media print
+  {
+    .d-print-none
+    {
+      display:none!important
+    }
+  }
 }
 </style>

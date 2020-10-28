@@ -6,6 +6,7 @@
       :width="250"
       :collapsible="true"
       @collapse="on_sidebar_collapse"
+      :class="'d-print-none'"
     >
     <div :style="{overflow: 'auto',height: '100%'}">
       <div class="logo" />
@@ -51,7 +52,6 @@ export default {
     },
     on_task_click()
     {
-      console.log('i am clucked');
       if(window.innerWidth<992)
       {
         this.sidebar_inactive=true;
