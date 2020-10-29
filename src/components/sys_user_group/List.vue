@@ -56,6 +56,7 @@ export default {
       {
         this.$parent.pagination.current_page=pagination.current; 
         this.$parent.pagination.items_per_page=pagination.pageSize; 
+        this.$parent.pagination.pageSize=pagination.pageSize; 
         this.$parent.reload_items=true;    
         this.$parent.get_items();
       }      
