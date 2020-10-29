@@ -49,11 +49,18 @@ export default {
   {      
   }, 
   methods:{ 
-    handleTableChange(pagination, filters, sorter) {
-      console.log("page cahnge cllaed");
-      console.log(pagination);
-      console.log(filters);
-      console.log(sorter);
+    handleTableChange(pagination, filters, sorter) 
+    {
+      console.log("table change");
+      if((this.$parent.pagination.current_page!=pagination.current)||(this.$parent.pagination.items_per_page!=pagination.pageSize))
+      {
+        this.$parent.pagination.current_page=pagination.current; 
+        this.$parent.pagination.items_per_page=pagination.pageSize; 
+        this.$parent.reload_items=true;    
+        this.$parent.get_items();
+      }      
+      // console.log(filters);
+      // console.log(sorter);
     },   
        
   } 

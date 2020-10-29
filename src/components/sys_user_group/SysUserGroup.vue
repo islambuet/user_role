@@ -24,7 +24,7 @@ export default {
         method:'list',        
         permissions:{},
         columns:{hidden_columns:[],control_columns:[],filter_columns:{},display_columns:[]},
-        pagination:{total:1,showSizeChanger:true,pageSizeOptions:['10','25','100','500'],showQuickJumper:true},
+        pagination:{total:1,showSizeChanger:true,pageSizeOptions:['10','25','100','500'],showQuickJumper:true,pageSize:25,current_page:1,items_per_page:25},//current_page,items_per_page to avoid confilct
         items:[],        
         item:{},        
         default_item:{},
@@ -154,11 +154,12 @@ export default {
     },
     get_items:function()
     {
-      console.log("render list view");
       if(this.reload_items)
       {
-        this.grid_data_loading=true;          
+          this.grid_data_loading=true;          
           var form_data=this.$system_functions.get_form_data_with_auth(new FormData());
+          form_data.append ('current_page', this.pagination.current_page); 
+          form_data.append ('items_per_page', this.pagination.items_per_page); 
           this.$axios.post('/sys_user_group/get_items',form_data)
           .then(response=>{                      
             if(response.data.error_type)        
@@ -170,7 +171,7 @@ export default {
                 
                 this.items=response.data.items;
                 //this.pagination.num_items=response.data.num_items;//here returning all data                                        
-                this.pagination.total=this.items.length*3;
+                this.pagination.total=response.data.total_items;
                 this.reload_items=false;
             }  
             this.grid_data_loading=false;     
