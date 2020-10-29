@@ -24,6 +24,7 @@ export default {
         method:'list',        
         permissions:{},
         columns:{hidden_columns:[],control_columns:[],filter_columns:{},display_columns:[]},
+        pagination:{total:1,showSizeChanger:true,pageSizeOptions:['10','25','100','500'],showQuickJumper:true},
         items:[],        
         item:{},        
         default_item:{},
@@ -124,14 +125,25 @@ export default {
           {
             title:'Id',            
             dataIndex: 'id',
+            key: 'id',
+            sorter: (a, b) => a.id - b.id,
           },
           {
             title: 'Name',
             dataIndex: 'name',
+            key: 'name',
+            sorter: (a, b) => a.name.localeCompare(b.name),
           },
           {
             title: 'Status',
             dataIndex: 'status',            
+          },
+          {
+            title: 'Created Date',
+            dataIndex: 'date_created',  
+            key: 'date_created',
+            sorter: (a, b) => a.date_created - b.date_created, 
+            scopedSlots: { customRender: 'date_created' },         
           },
           {
             title: 'Action',
@@ -158,7 +170,7 @@ export default {
                 
                 this.items=response.data.items;
                 //this.pagination.num_items=response.data.num_items;//here returning all data                                        
-                //this.pagination.num_items=this.items.length;
+                this.pagination.total=this.items.length*3;
                 this.reload_items=false;
             }  
             this.grid_data_loading=false;     

@@ -6,7 +6,16 @@
         <a-button type="primary" :class="'mr-2 mb-2'" v-if="$parent.permissions.action_0" @click="$parent.init">{{$system_functions.get_label('button_refresh')}}</a-button>
       </a-card>
       <a-card>
-        <a-table :columns="$parent.columns.display_columns"  :data-source="$parent.items" :loading="$parent.grid_data_loading" >
+        <a-table 
+        :columns="$parent.columns.display_columns"  
+        :data-source="$parent.items" 
+        :loading="$parent.grid_data_loading" 
+        bordered 
+        :pagination="$parent.pagination"
+        :scroll="{ y: 240 }"
+        @change="handleTableChange"
+        >
+        <template slot="date_created" slot-scope="value"> {{$system_functions.display_date(value)}} </template>
         </a-table>        
       </a-card>
   </div>
@@ -39,7 +48,13 @@ export default {
   mounted:function()
   {      
   }, 
-  methods:{    
+  methods:{ 
+    handleTableChange(pagination, filters, sorter) {
+      console.log("page cahnge cllaed");
+      console.log(pagination);
+      console.log(filters);
+      console.log(sorter);
+    },   
        
   } 
 }

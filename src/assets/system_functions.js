@@ -106,10 +106,8 @@ var system_functions= new Vue(
                   });
                 
             }
-        }
+        },
         
-        
-        /*
         //display seconds to string
         display_date:function(time)
         {
@@ -129,7 +127,7 @@ var system_functions= new Vue(
                 return '';
             }            
         },        
-        //filter section
+        /*//filter section
         //get display formated columns. columns=columns.display_columns
         get_display_columns:function(columns)
         {
