@@ -141,6 +141,19 @@ export default {
             dataIndex: 'name',            
             sorter: (a, b) => a.name.localeCompare(b.name),
             width: 100,
+            // filters: [
+            //       {
+            //         text: 'Joe',
+            //         value: 'Joe',
+            //       },
+            //       {
+            //         text: 'Jim',
+            //         value: 'Jim',
+            //       },                  
+            //     ],
+                // specify the condition of filtering result
+                // here is that finding the name started with `value`
+                //onFilter: (value, record) => record.name.indexOf(value) === 0,
           },
           {
             title: 'Status',
