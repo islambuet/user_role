@@ -13,9 +13,10 @@ Vue.use(Antd);
 //axios
 import axios from 'axios'
 Vue.prototype.$axios=axios
-axios.defaults.baseURL = 'http://192.168.0.2/user_role_back/';
+//axios.defaults.baseURL = 'http://192.168.0.2/user_role_back/';
 //axios.defaults.baseURL = 'http://103.89.24.206/user_role_back/';
 //axios.defaults.baseURL = 'http://localhost/user_role_back/';
+axios.defaults.baseURL = 'http://shaiful.me/api_user_role/';
 
 Vue.config.productionTip = false
 

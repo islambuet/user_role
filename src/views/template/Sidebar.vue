@@ -4,8 +4,7 @@
       collapsedWidth=0
       :style="{height: '100vh','z-index':'100'}"
       :width="250"
-      :collapsible="true"
-      @collapse="on_sidebar_collapse"
+      :collapsible="true"      
       :class="'d-print-none'"
       :id="'sidebar_left'"
     >
