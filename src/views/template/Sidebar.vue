@@ -7,6 +7,7 @@
       :collapsible="true"
       @collapse="on_sidebar_collapse"
       :class="'d-print-none'"
+      :id="'sidebar_left'"
     >
     <div :style="{overflow: 'auto',height: '100%'}">
       <div class="logo" />
@@ -38,24 +39,12 @@ export default {
       this.sidebar_inactive=true
     }
   },
-  methods: {
-    on_sidebar_collapse(collapsed, type) {
-      var element = document.getElementById("container_content");
-      if(!collapsed)
-      { 
-        element.classList.add("sidebar_active");
-      }
-      else
-      {
-         element.classList.remove("sidebar_active");
-      }
-    },
+  methods: {    
     on_task_click()
     {
       if(window.innerWidth<992)
       {
-        this.sidebar_inactive=true;
-        this.on_sidebar_collapse(true);
+        this.sidebar_inactive=true;        
       }
     }
       

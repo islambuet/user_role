@@ -30,35 +30,17 @@ export default {
     Loading,LoadingFailed,LoadingAccessDeny,SiteOffLine,Sidebar,Header
   },
   data() {
-    return {
-      sidebar_inactive:false,
+    return {      
       status_site_loaded:0,//Loading=0,success=0,failed=-1  only this page 
     };
   },
   mounted: function()//before create
   {
-    //console.log(window.innerWidth); 
-    //console.log(screen.width); 
-    if(window.innerWidth<992)
-    {
-      this.sidebar_inactive=true
-    }
     this.$system_functions.load_languages();
     this.$system_functions.set_page_title(this.$system_functions.get_label('label_site_title'));
     this.init();
   },
-  methods: {
-    on_sidebar_collapse(collapsed, type) {
-      var element = document.getElementById("container_content");
-      if(!collapsed)
-      { 
-        element.classList.add("sidebar_active");
-      }
-      else
-      {
-         element.classList.remove("sidebar_active");
-      }
-    },
+  methods: {    
     init: function()
     {
       this.status_site_loaded=0; 
@@ -112,8 +94,8 @@ export default {
 
 
   @media (max-width:991px){
-    #container_content.sidebar_active{
-    margin-left: -250px;
+    #sidebar_left {
+    position: fixed;
   }
   @media print{
     .d-print-none{
