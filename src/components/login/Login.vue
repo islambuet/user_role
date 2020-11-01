@@ -122,6 +122,7 @@ export default {
                     this.$system_variables.status_data_loaded = 0;
                     var form_data=new FormData(document.getElementById('form_login'));
                     form_data.append ('token_device', this.$system_variables.user.token_device);
+                    form_data.append ('language', this.$system_variables.language);
                     this.$axios.post('/login',form_data)
                     .then(response=>{
                         console.log(response.data);
@@ -192,6 +193,7 @@ export default {
 
                     var form_data=new FormData(document.getElementById('form_otp'));
                     form_data.append ('token_device', this.$system_variables.user.token_device);
+                    form_data.append ('language', this.$system_variables.language);
 
                     this.$axios.post('/Login/login_sms',form_data)
                     .then(response=>{                

@@ -24,7 +24,7 @@ export default {
         method:'list',        
         permissions:{},
         columns:{hidden_columns:[],control_columns:[],filter_columns:{},display_columns:[]},
-        pagination:{total:1,showSizeChanger:true,pageSizeOptions:['10','25','100','500'],showQuickJumper:true,pageSize:25,current_page:1,items_per_page:25},//current_page,items_per_page to avoid confilct
+        pagination:{total:1,showSizeChanger:true,pageSizeOptions:['10','25','100','500'],showQuickJumper:true,pageSize:25,current:1,onChange:this.onpaginationChange,onShowSizeChange:this.onpaginationChange},//current_page,items_per_page to avoid confilct
         items:[],        
         item:{},        
         default_item:{},
@@ -122,35 +122,48 @@ export default {
       columns['status']={label:this.$system_variables.get_label('label_status'), hidden:this.columns.hidden_columns.indexOf('status')>=0?true:false,sticky_column:false,sortable:false};
       this.columns.display_columns=this.$system_functions.get_display_columns(columns); */
       this.columns.display_columns = [
-          {
-            title:'Id',            
-            dataIndex: 'id',
-            key: 'id',
-            sorter: (a, b) => a.id - b.id,
-          },
-          {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            sorter: (a, b) => a.name.localeCompare(b.name),
-          },
-          {
-            title: 'Status',
-            dataIndex: 'status',            
-          },
-          {
-            title: 'Created Date',
-            dataIndex: 'date_created',  
-            key: 'date_created',
-            sorter: (a, b) => a.date_created - b.date_created, 
-            scopedSlots: { customRender: 'date_created' },         
-          },
-          {
+         {
             title: 'Action',
             key: 'action',
             scopedSlots: { customRender: 'action' },
+            width: 100,
+            
           },
+          {
+            title:'Id',            
+            dataIndex: 'id',            
+            sorter: (a, b) => a.id - b.id,
+            width: 50,
+            
+          },
+          {
+            title: 'Name',
+            dataIndex: 'name',            
+            sorter: (a, b) => a.name.localeCompare(b.name),
+            width: 100,
+          },
+          {
+            title: 'Status',
+            dataIndex: 'status', 
+            width: 80,                       
+          },
+          {
+            title: 'Created Date',
+            dataIndex: 'date_created',              
+            sorter: (a, b) => a.date_created - b.date_created, 
+            scopedSlots: { customRender: 'date_created' },         
+            width: 150,
+          },
+           
+          
         ];
+    },
+    onpaginationChange:function(current, pageSize)
+    {
+      this.pagination.current=current;
+      this.pagination.pageSize=pageSize;
+      this.reload_items=true;    
+      this.get_items();
     },
     get_items:function()
     {
@@ -158,8 +171,10 @@ export default {
       {
           this.grid_data_loading=true;          
           var form_data=this.$system_functions.get_form_data_with_auth(new FormData());
-          form_data.append ('current_page', this.pagination.current_page); 
-          form_data.append ('items_per_page', this.pagination.items_per_page); 
+          form_data.append ('current_page', this.pagination.current); 
+          form_data.append ('items_per_page', this.pagination.pageSize); 
+          //form_data.append ('current_page', this.pagination.current_page); 
+          //form_data.append ('items_per_page', this.pagination.items_per_page); 
           this.$axios.post('/sys_user_group/get_items',form_data)
           .then(response=>{                      
             if(response.data.error_type)        

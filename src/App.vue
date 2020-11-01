@@ -83,9 +83,8 @@ export default {
                       
               //error
           }
-          
           this.status_site_loaded=1;
-          console.log(this.status_site_loaded);
+          
         })).catch(error => {
           console.log(error);
 

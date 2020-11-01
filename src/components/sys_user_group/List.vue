@@ -9,11 +9,11 @@
         <a-table 
         :columns="$parent.columns.display_columns"  
         :data-source="$parent.items" 
+        rowKey='id'
         :loading="$parent.grid_data_loading" 
         bordered 
         :pagination="$parent.pagination"
-        :scroll="{ y: 240 }"
-        @change="handleTableChange"
+        :scroll="{ y: 240}"        
         >
         <template slot="date_created" slot-scope="value"> {{$system_functions.display_date(value)}} </template>
         </a-table>        
@@ -49,7 +49,7 @@ export default {
   {      
   }, 
   methods:{ 
-    handleTableChange(pagination, filters, sorter) 
+    /*handleTableChange(pagination, filters, sorter) 
     {
       console.log("table change");
       if((this.$parent.pagination.current_page!=pagination.current)||(this.$parent.pagination.items_per_page!=pagination.pageSize))
@@ -62,7 +62,7 @@ export default {
       }      
       // console.log(filters);
       // console.log(sorter);
-    },   
+    },*/   
        
   } 
 }
